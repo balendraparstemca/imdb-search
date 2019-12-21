@@ -1,0 +1,130 @@
+
+<div class="menu">
+  <section class="filter-wrapper">
+    
+    <div class="keyword-wrapper">
+      <select class="imdb" [formControl]="searchc" value="All"> <option value="all" selected>All</option> 
+        <option value="movie">Movies</option> 
+        <option value="tv">Tv-Episode</option>
+         <option value="videogame">Videogame</option>
+          
+          <option value="tv">TV</option> </select>
+
+     
+      <span></span> <input  #movieSearchInput type="text" id="keyword" placeholder="search IMDb..." autofocus/> <button type="button" (click)="searchkeyword(termsecond)" class="searchButton">
+   search
+ </button>
+     </div>
+   <ul class="filter-select">
+   <ng-container *ngIf="notfound; else elseTemplate">
+
+      <div class="col-12 text-center">
+          <div class="alert alert-danger" role="alert">
+              <h1>not found</h1>
+
+          </div>
+      </div>
+
+  </ng-container>
+  <ng-template #elseTemplate>
+    <div class="row" *ngIf="isSearching">
+      <div class="col-12 text-center">
+
+          <h4>Searching ... </h4>
+
+      </div>
+  </div>
+     <li *ngFor="let res of resultsone" (click)="searchkeyword(res.title)" class="filter-select-list"><img src="{{res.urlPoster}}" alt="" width="50" height="50" (error) ="onImgError($event)"><p class="artist-name">
+       {{res.title}}</p>
+      
+       </ng-template>
+   </ul>
+   </section>
+   </div>
+
+   <div class="body">
+     
+<div class="content">
+    <ng-container *ngIf="notfounddetails">
+
+      <div class="col-12 text-center">
+          <div class="alert alert-danger" role="alert">
+              <h1>not found</h1>
+
+          </div>
+      </div>
+
+  </ng-container>
+
+    <div class="well"  *ngFor="let res of results;let i=index">
+        <div class="media">
+          <a class="pull-left" href="#">
+          <img class="media-object" src={{res.urlPoster}}>
+        </a>
+        <div class="media-body">
+          <h4 class="media-heading"><span class="badge">{{i+1}} </span>  {{res.title}}</h4>
+            <p class="text-right"> <button type="button" (click)=" getid(res.idIMDB,res.title)"   class="btn btn-primary btn-sm" data-toggle="modal" data-target="#exampleModal">
+              <span class="glyphicon glyphicon-star"></span> Rate it 
+            </button></p>
+            <p>{{res.plot}}.</p>
+            <ul class="list-inline list-unstyled">
+          <li>
+            <span> 
+            <span class="glyphicon glyphicon-user">Director:</span>
+              
+           {{res.directors[0].name}}
+          </span>
+        </li> <li>|</li>
+              <li> year:{{res.year}}</li> <li>|</li>
+              <span><i class="glyphicon glyphicon-user">Stars:</i> </span>
+              <li>|</li>
+              <li>
+                 <span class="glyphicon glyphicon-star"></span>Rating:{{res.rating}}
+                        
+              </li>
+              <li>|Ranking:{{res.ranking}}</li>
+              <li>|Type:{{res.type}}</li>
+            
+        </ul>
+         </div>
+      </div>
+    </div>
+   
+  
+</div>
+<div class="bottom">
+  
+
+  <!-- Modal -->
+  <div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="exampleModalLabel">Movie id: {{imdbid}}| name:{{moviename}}</h5>
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+          </button>
+        </div>
+        <div class="modal-body">
+          <div class="row">
+            <div class="col-sm-12">
+                <ul class="list-inline rating-list" 
+                    *ngFor="let star of stars" style="display: inline-block" >
+                      <li (click)="countStar(star)"
+                          [ngClass]="{'selected': (star <= selectedValue)}">
+                        <i class="fa fa-star"></i>
+                      </li> 
+                </ul>
+            </div>
+          </div>
+        </div>
+        <div class="modal-footer">
+          <button type="button" (click)="storestar()" class="btn btn-secondary" data-dismiss="modal">Submit</button>
+          
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+   </div>
+   <div class="footer">balendra & copyright.com</div>
